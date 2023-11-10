@@ -8,10 +8,9 @@ extern char **environ;
 
 void executioner(char *commandLine)
 {
-	pid_t pid = fork();
+	pid_t pid;
 	int status;
 	char **args;
-	char **env = environ;
 
 	args = malloc((MAX_CMD_LEN + 1) * sizeof(char *));
 	if (args == NULL)
@@ -21,6 +20,8 @@ void executioner(char *commandLine)
 	}
 	args = tokenize(commandLine, args);
 
+	pid = fork();
+
 	if (pid == -1)
 	{
 		perror("forking gone wrong: ");
@@ -29,10 +30,6 @@ void executioner(char *commandLine)
 	else if (pid == 0)
 	{
 		printf("Executing Command: %s\n", args[0]);
-		while (*env != NULL)
-		{
-			printf("%s\n", *env);
-		}
 		/*Start the child process*/
 
 		if (execve(args[0], args, environ) == -1)
@@ -49,6 +46,7 @@ void executioner(char *commandLine)
 		waitpid(pid, &status, 0);
 		printf("Child Processes Exited\n");
 	}
+	free(args);
 }
 
 /**
