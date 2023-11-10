@@ -18,8 +18,8 @@ void executioner(char *commandLine)
 		perror("MAlloc args Fail: ");
 		exit(EXIT_FAILURE);
 	}
-	args = tokenize(commandLine, args);
 
+	args = tokenize(commandLine, args);
 	pid = fork();
 
 	if (pid == -1)
@@ -29,22 +29,23 @@ void executioner(char *commandLine)
 	}
 	else if (pid == 0)
 	{
-		printf("Executing Command: %s\n", args[0]);
+		printf("Executing Command: %s\n\n", args[0]);
 		/*Start the child process*/
 
 		if (execve(args[0], args, environ) == -1)
 		{
-			perror("shelly no bad vibe$ ");
-			printf("errno: %d\n", errno);
+			perror("shelly bad vibe$ ");
+			printf("errno: %d\n\n", errno);
 			exit(EXIT_FAILURE);
 		}
+		/*printf("Child Process Exected Successfully\n\n");*/
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
 		/*Parrent Waits*/
 		waitpid(pid, &status, 0);
-		printf("Child Processes Exited\n");
+		/*printf("Child Processes Exited\n");*/
 	}
 	free(args);
 }
@@ -97,5 +98,23 @@ char** tokenize(char *commandLine, char **args)
 	args[i] = NULL;
 
 	return (args);
+}
+
+/**
+ * sanitize - remove non-printable char from string
+ * @str: pointer to string
+ */
+void sanitize(char *str, char unwantedChar)
+{
+	size_t i;
+	size_t len = strlen(str);
+
+	for (i = 0; i <len; i++)
+	{
+		if (str[i] == unwantedChar)
+		{
+			str[i] = ' ';
+		}
+	}
 }
 

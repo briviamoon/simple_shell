@@ -9,10 +9,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <ctype.h>
 #define MAX_CMD_LEN 150
 
 void executioner(char *commandLine);
 void beGoneBackSpace(char *c);
 char** tokenize(char *commandLine, char **args);
+void sanitize(char *str, char unwantedChar);
 
 #endif
