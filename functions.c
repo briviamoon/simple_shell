@@ -29,7 +29,7 @@ void executioner(char *commandLine)
 	}
 	else if (pid == 0)
 	{
-		printf("Executing Command: %s\n\n", args[0]);
+		/*printf("Executing Command: %s\n\n", args[0]);*/
 		/*Start the child process*/
 
 		if (execve(args[0], args, environ) == -1)
