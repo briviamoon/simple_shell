@@ -1,5 +1,4 @@
 #include "shell.h"
-extern char **environ;
 
 /**
  * executioner - executes the shell command
@@ -78,12 +77,13 @@ void beGoneBackSpace(char *c)
 }
 
 /**
- * tokenize - tokenizes a string.
- * @c: poiner to a sting
- * Return: pointer to a pointer to string
+ * tokenize - Splits a string into tokens.
+ * @commandLine: String to be tokenized.
+ * @args: An array to store the tokens
+ * Return: A double pointer tothe tokens
  */
 
-char** tokenize(char *commandLine, char **args)
+char **tokenize(char *commandLine, char **args)
 {
 	char *token;
 	int i = 0;
@@ -102,14 +102,15 @@ char** tokenize(char *commandLine, char **args)
 
 /**
  * sanitize - remove non-printable char from string
- * @str: pointer to string
+ * @str: String to be sanitized
+ * @unwantedChar: Character to be removed from the string
  */
 void sanitize(char *str, char unwantedChar)
 {
 	size_t i;
 	size_t len = strlen(str);
 
-	for (i = 0; i <len; i++)
+	for (i = 0; i < len; i++)
 	{
 		if (str[i] == unwantedChar)
 		{
