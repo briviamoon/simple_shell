@@ -9,6 +9,8 @@ void executioner(char *commandLine)
 {
 	char **args;
 	char command[100];
+	int builtinVerified;
+	int argc = 0;
 
 	args = malloc((MAX_CMD_LEN + 1) * sizeof(char *));
 	if (args == NULL)
@@ -17,7 +19,7 @@ void executioner(char *commandLine)
 		exit(EXIT_FAILURE);
 	}
 
-	args = tokenize(commandLine, args);
+	args = tokenize(commandLine, args, argc);
 	if (*args[0] != '/')
 	{
 		strcpy(command, "/bin/");
@@ -26,6 +28,12 @@ void executioner(char *commandLine)
 	else
 	{
 		strcpy(command, args[0]);
+	}
+
+	builtinVerified = handlerPicker(command, args, argc);
+	if (builtinVerified == 0)
+	{
+		exit(EXIT_SUCCESS);
 	}
 
 	letsForkIt(command, args);
@@ -65,9 +73,10 @@ void beGoneBackSpace(char *c)
  * @commandLine: String to be tokenized.
  * @args: An array to store the tokens
  * Return: A double pointer tothe tokens
+ *		argCount Is incremented.
  */
 
-char **tokenize(char *commandLine, char **args)
+char **tokenize(char *commandLine, char **args, int argCount)
 {
 	char *token;
 	int i = 0;
@@ -78,6 +87,7 @@ char **tokenize(char *commandLine, char **args)
 	{
 		args[i++] = token;
 		token = strtok(NULL, " ");
+		argCount++;
 	}
 	args[i] = NULL;
 
@@ -140,4 +150,3 @@ void letsForkIt(char *command, char **par)
 		/*printf("Child Process Exited\n");*/
 	}
 }
-
