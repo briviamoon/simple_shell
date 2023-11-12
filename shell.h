@@ -17,5 +17,6 @@ void executioner(char *commandLine);
 void beGoneBackSpace(char *c);
 char **tokenize(char *commandLine, char **args);
 void sanitize(char *str, char unwantedChar);
+void letsForkIt(char *command, char **par);
 
 #endif

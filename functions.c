@@ -7,8 +7,6 @@
 
 void executioner(char *commandLine)
 {
-	pid_t pid;
-	int status;
 	char **args;
 	char command[100];
 
@@ -30,33 +28,8 @@ void executioner(char *commandLine)
 		strcpy(command, args[0]);
 	}
 
-	pid = fork();
+	letsForkIt(command, args);
 
-	if (pid == -1)
-	{
-		perror("forking gone wrong: ");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
-	{
-		/*printf("Executing Command: %s\n\n", args[0]);*/
-		/*Start the child process*/
-
-		if (execve(command, args, environ) == -1)
-		{
-			perror("shelly bad vibe$ ");
-			printf("errno: %d\n\n", errno);
-			exit(EXIT_FAILURE);
-		}
-		/*printf("Child Process Exected Successfully\n\n");*/
-		exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		/*Parrent Waits*/
-		waitpid(pid, &status, 0);
-		/*printf("Child Processes Exited\n");*/
-	}
 	free(args);
 }
 
@@ -127,6 +100,44 @@ void sanitize(char *str, char unwantedChar)
 		{
 			str[i] = ' ';
 		}
+	}
+}
+
+/**
+ * letsForkIt - creates a child process.
+ * @command: the command to be executed.
+ * @par: list of command line paramenters.
+ */
+
+void letsForkIt(char *command, char **par)
+{
+	pid_t pid;
+	int status;
+
+	pid = fork();
+
+	if (pid == -1)
+	{
+		perror("forking gone wrong\n");
+		exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+	{
+		/*Start execution*/
+		if (execve(command, par, environ) == -1)
+		{
+			perror("shelly got bad vibes$ ");
+			printf("errno: %d\n", errno);
+			exit(EXIT_FAILURE);
+		}
+		/*printf("Child Process Execution success\n");*/
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		/*Parrent Waits For Child Process*/
+		waitpid(pid, &status, 0);
+		/*printf("Child Process Exited\n");*/
 	}
 }
 
