@@ -12,9 +12,10 @@
 #include <ctype.h>
 #define MAX_CMD_LEN 150
 
+extern char **environ; /* Moved declaration to the header */
 void executioner(char *commandLine);
 void beGoneBackSpace(char *c);
-char** tokenize(char *commandLine, char **args);
+char **tokenize(char *commandLine, char **args);
 void sanitize(char *str, char unwantedChar);
 
 #endif
