@@ -10,6 +10,7 @@ void executioner(char *commandLine)
 	pid_t pid;
 	int status;
 	char **args;
+	char command[100];
 
 	args = malloc((MAX_CMD_LEN + 1) * sizeof(char *));
 	if (args == NULL)
@@ -19,6 +20,16 @@ void executioner(char *commandLine)
 	}
 
 	args = tokenize(commandLine, args);
+	if (*args[0] != '/')
+	{
+		strcpy(command, "/bin/");
+		strcat(command, args[0]);
+	}
+	else
+	{
+		strcpy(command, args[0]);
+	}
+
 	pid = fork();
 
 	if (pid == -1)
@@ -31,7 +42,7 @@ void executioner(char *commandLine)
 		/*printf("Executing Command: %s\n\n", args[0]);*/
 		/*Start the child process*/
 
-		if (execve(args[0], args, environ) == -1)
+		if (execve(command, args, environ) == -1)
 		{
 			perror("shelly bad vibe$ ");
 			printf("errno: %d\n\n", errno);
