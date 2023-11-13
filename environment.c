@@ -8,7 +8,7 @@
  *
  */
 
-void addNode(struct EnvNode **head, char *variable, char *value)
+void addNode(struct EnvNode *head, char *variable, char *value)
 {
 	struct EnvNode *new = (struct EnvNode *)malloc(sizeof(struct EnvNode));
 
@@ -20,9 +20,9 @@ void addNode(struct EnvNode **head, char *variable, char *value)
 
 	new->variable = strdup(variable);
 	new->value = strdup(value);
-	new->Next = *head;
+	new->Next = head;
 
-	*head = new;
+	head = new;
 }
 
 /*
@@ -37,7 +37,7 @@ char *findEnvVariable(struct EnvNode *head, char *variable)
 
 	while (current != NULL)
 	{
-		if (current->variable == variable)
+		if (strcmp(current->variable, variable) == 0)
 		{
 			return (current->value);
 		}
@@ -69,3 +69,20 @@ void freeTheNodes(struct EnvNode *head)
  * @enVariable: poiner to the environment variable string.
  * Return: returns the value of the environment variable's value.
  */
+struct EnvNode* getEnvironment()
+{
+	int i = 0;
+	struct Envnode *EnvList = malloc(sizeof(struct EnvNode));
+	char *variable = NULL;
+	char *value = NULL;
+
+	while (environ[i] != NULL)
+	{
+		variable = strtok(environ[i], "=");
+		value = strtok(NULL, "=");
+		addNode(EnvList, variable, value);
+		i++;
+	}
+	return(EnvList);
+}
+

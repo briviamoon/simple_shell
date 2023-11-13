@@ -46,11 +46,12 @@ struct EnvNode {
 	char *variable;
 	char *value;
 	struct EnvNode *Next;
-} ;
+};
 
 /*Node Related functions*/
-/*void addNode(struct EnvNode **head, const char *variable, char *value);*/
+void addNode(struct EnvNode *head, char *variable, char *value);
 void freeTheNodes(struct EnvNode *head);
 char *findEnvVariable(struct EnvNode *head, char *variable);
+struct EnvNode* getEnvironment();
 
 #endif
