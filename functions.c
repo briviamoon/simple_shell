@@ -73,7 +73,7 @@ void beGoneBackSpace(char *c)
  * @commandLine: String to be tokenized.
  * @args: An array to store the tokens
  * Return: A double pointer tothe tokens
- *		argCount Is incremented.
+ *@argCount: Is incremented.
  */
 
 char **tokenize(char *commandLine, char **args, int argCount)
@@ -116,7 +116,7 @@ void sanitize(char *str, char unwantedChar)
 /**
  * letsForkIt - creates a child process.
  * @command: the command to be executed.
- * @par: list of command line paramenters.
+ * @par: list of command line parameters
  */
 
 void letsForkIt(char *command, char **par)
@@ -124,12 +124,19 @@ void letsForkIt(char *command, char **par)
 	pid_t pid;
 	int status;
 
+
+	if (command == NULL)
+	{
+		fprintf(stderr, "Error: Command is NULL\n");
+		exit(EXIT_FAILURE);
+	}
+
 	pid = fork();
 
 	if (pid == -1)
 	{
 		perror("forking gone wrong\n");
-		exit(EXIT_FAILURE);
+		exit(FORK_FAILURE);
 	}
 	else if (pid == 0)
 	{
@@ -137,8 +144,8 @@ void letsForkIt(char *command, char **par)
 		if (execve(command, par, environ) == -1)
 		{
 			perror("shelly got bad vibes$ ");
-			printf("errno: %d\n", errno);
-			exit(EXIT_FAILURE);
+			fprintf(stderr, "errno: %d\n", errno);
+			exit(EXEC_FAILURE);
 		}
 		/*printf("Child Process Execution success\n");*/
 		exit(EXIT_SUCCESS);

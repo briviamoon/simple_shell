@@ -10,7 +10,11 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <ctype.h>
+#define EXEC_FAILURE 777
+#define FORK_FAILURE 555
 #define MAX_CMD_LEN 150
+#define EXEC_FAILURE 777
+#define FORK_FAILURE 555
 
 extern char **environ;
 void executioner(char *commandLine);
@@ -19,6 +23,10 @@ char **tokenize(char *commandLine, char **args, int argCount);
 void sanitize(char *str, char unwantedChar);
 void letsForkIt(char *command, char **par);
 int commandExists(char *cmd);
+int builtin_exit(char *commands[]);
+int builtin_cd(char *commands[]);
+int is_builtin(char *command);
+int builtin_help(void);
 
 /*
  * BuiltInCommand - Data structure for built in commands.
@@ -51,6 +59,7 @@ struct EnvNode {
 /*Node Related functions*/
 void addNode(struct EnvNode *head, char *variable, char *value);
 void freeTheNodes(struct EnvNode *head);
+void addNode(struct EnvNode **head, char *variable, char *value);
 char *findEnvVariable(struct EnvNode *head, char *variable);
 struct EnvNode* getEnvironment();
 
