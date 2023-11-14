@@ -16,7 +16,13 @@ int handlerPicker(char *command, char **args, int argc)
 	struct BuiltInCommand builtIn[] = {
 		{"cd", directoryChange},
 		{"echo", stringEcho},
-		{NULL, NULL}};
+		{"exit", builtin_exit},
+		{"help", builtin_help},
+		{"pwd", directoryPrint},
+		{"env", printEnvironment},
+		{"setenv", setEnvironment},
+		{NULL, NULL},
+	};
 
 	if (param == NULL)
 	{
@@ -32,14 +38,10 @@ int handlerPicker(char *command, char **args, int argc)
 		if (strcmp(command, builtIn[i].cmdName) == 0)
 		{
 			/*match found, call handler function*/
-			if (strcmp(command, "pwd") == 0)
-			{
-				directoryPrint();
-			}
 			if (builtIn[i].handler((void *)param[i]) != 0)
 			{
-				printf("something's of in a built in handler\n");
-				perror("handler function\n");
+				fprintf(stderr, "something's of in a built in handler\n");
+				return (-1);
 			}
 			return (0);
 		}
@@ -57,16 +59,23 @@ int directoryChange(void *param)
 {
 	char *dir = (char *)param;
 
-	if (chdir(dir) != 0)
+	if (dir == NULL)
 	{
-		perror("chdir");
+		chdir("./");
+		return(0);
+	}
+	else if(chdir(dir) == -1)
+	{
+		printf("%s\n", dir);
+		perror("chdir\n");
 	}
 	return (0);
 }
 
-void directoryPrint()
+int directoryPrint(void *param)
 {
-	char buffer[1024];
+	char buffer[MAX_CMD_LEN];
+	(void)param;
 
 	if (getcwd(buffer, sizeof(buffer)) != NULL)
 	{
@@ -75,7 +84,9 @@ void directoryPrint()
 	else
 	{
 		perror("getcwd");
+		return (-1);
 	}
+	return (0);
 }
 
 /**

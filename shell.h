@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+/*#include <shell.h>*/	 /*This is in use on case of a linux system*/
+/*#include <windows.h>*/ /*This is in use in case of a windows system*/
 #include <sys/wait.h>
 #include <string.h>
 #include <unistd.h>
@@ -12,7 +14,7 @@
 #include <ctype.h>
 #define EXEC_FAILURE 777
 #define FORK_FAILURE 555
-#define MAX_CMD_LEN 150
+#define MAX_CMD_LEN 1024
 #define EXEC_FAILURE 777
 #define FORK_FAILURE 555
 
@@ -22,18 +24,16 @@ void beGoneBackSpace(char *c);
 char **tokenize(char *commandLine, char **args, int argCount);
 void sanitize(char *str, char unwantedChar);
 void letsForkIt(char *command, char **par);
-int commandExists(char *cmd);
-int builtin_exit(char *commands[]);
-int builtin_cd(char *commands[]);
-int is_builtin(char *command);
-int builtin_help(void);
+void parameterize(char **param, char **args);
+int builtin_help(void *param);
 
 /*
  * BuiltInCommand - Data structure for built in commands.
  * @cmdName: name of command.
  * @handler: function to handle the command.
  */
-struct BuiltInCommand {
+struct BuiltInCommand
+{
 	char *cmdName;
 	int (*handler)(void *param);
 };
@@ -41,26 +41,30 @@ struct BuiltInCommand {
 /*built in commands functions*/
 int handlerPicker(char *command, char **args, int argc);
 int directoryChange(void *param);
-void directoryPrint();
+int directoryPrint(void *param);
 int stringEcho(void *param);
-void parameterize(char **param, char **args);
+int builtin_exit(void *param);
+int printEnvironment(void *param);
+int setEnvironment(void *param);
 
 /**
  * EnvironmentNode - Structure of linked-list of environment vars.
  * @variable: environment variable.
  * @Value: value of the environment variable.
  */
-struct EnvNode {
+struct EnvNode
+{
 	char *variable;
 	char *value;
 	struct EnvNode *Next;
 };
 
 /*Node Related functions*/
-void addNode(struct EnvNode *head, char *variable, char *value);
 void freeTheNodes(struct EnvNode *head);
-void addNode(struct EnvNode **head, char *variable, char *value);
+struct EnvNode *addNode(struct EnvNode *head, char *variable, char *value);
 char *findEnvVariable(struct EnvNode *head, char *variable);
-struct EnvNode* getEnvironment();
+struct EnvNode *getEnvironment();
+int printList(struct EnvNode *head);
+char **ConvertEnvListToArray(struct EnvNode *envList);
 
 #endif
