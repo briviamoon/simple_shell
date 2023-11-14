@@ -63,7 +63,7 @@ struct EnvNode
 void freeTheNodes(struct EnvNode *head);
 struct EnvNode *addNode(struct EnvNode *head, char *variable, char *value);
 char *findEnvVariable(struct EnvNode *head, char *variable);
-struct EnvNode *getEnvironment();
+struct EnvNode *getEnvironment(void);
 int printList(struct EnvNode *head);
 char **ConvertEnvListToArray(struct EnvNode *envList);
 

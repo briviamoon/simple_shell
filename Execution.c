@@ -85,6 +85,7 @@ char **tokenize(char *commandLine, char **args, int argCount)
 {
 	char *token;
 	int i = 0;
+	int count = argCount;
 
 	token = strtok(commandLine, " ");
 
@@ -92,8 +93,9 @@ char **tokenize(char *commandLine, char **args, int argCount)
 	{
 		args[i++] = token;
 		token = strtok(NULL, " ");
-		argCount++;
+		count++;
 	}
+	argCount = count;
 	args[i] = NULL;
 
 	return (args);

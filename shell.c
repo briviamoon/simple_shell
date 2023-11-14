@@ -14,9 +14,6 @@ int main(void)
 	char *shelly = "Shelly Vibe$";
 	/*char *hardTest = "/bin/ls";*/
 
-	setenv("TERM", "xterm-256color", 1);
-	setEnvironment()
-
 	while (1)
 	{
 		/*Show Prompt Sign*/

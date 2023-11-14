@@ -84,7 +84,7 @@ void freeTheNodes(struct EnvNode *head)
  * @enVariable: poiner to the environment variable string.
  * Return: returns the value of the environment variable's value.
  */
-struct EnvNode *getEnvironment()
+struct EnvNode *getEnvironment(void)
 {
 	int i = 0;
 	struct EnvNode *envList = NULL;
