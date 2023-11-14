@@ -5,29 +5,28 @@
  * @head: pointer to head Node of List.
  * @variable: environment variable to add.
  * @value: env variable value
- *
  */
+
 
 void addNode(struct EnvNode **head, char *variable, char *value)
 {
-	struct EnvNode *new = (struct EnvNode *)malloc(sizeof(struct EnvNode));
-
-	if (new == NULL)
+	struct EnvNode *newNode = malloc(sizeof(struct EnvNode));	
+	if (newNode == NULL)
 	{
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
 
-	new->variable = strdup(variable);
-	new->value = strdup(value);
-	new->Next = *head;
+	newNode->variable = strdup(variable);
+	newNode->value = strdup(value);
+	newNode->Next = *head;
 
-	*head = new;
+	*head = newNode;
 }
 
 /*
  * findEnvVariable - finds a specific Env variable value
- * @EnvNode: pointer to a list HEad Node.
+ * @head: pointer to a list Head Node.
  * @variable: pointer to variable.
  * Return: returns a pointer to a specific environment variable's s value.
  */
@@ -37,7 +36,7 @@ char *findEnvVariable(struct EnvNode *head, char *variable)
 
 	while (current != NULL)
 	{
-		if (current->variable == variable)
+		if (strcmp(current->variable, variable) == 0)
 		{
 			return (current->value);
 		}
@@ -52,7 +51,7 @@ char *findEnvVariable(struct EnvNode *head, char *variable)
  */
 void freeTheNodes(struct EnvNode *head)
 {
-	struct EnvNode *temporary = (struct EnvNode *)malloc(sizeof(struct EnvNode *));
+struct EnvNode *temporary;
 
 	while (head != NULL)
 	{
@@ -69,3 +68,7 @@ void freeTheNodes(struct EnvNode *head)
  * @enVariable: poiner to the environment variable string.
  * Return: returns the value of the environment variable's value.
  */
+char *getEnvironment(char *enVariable)
+{
+	return (getenv(enVariable));
+}
