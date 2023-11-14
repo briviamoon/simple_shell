@@ -7,9 +7,10 @@
 
 void executioner(char *commandLine)
 {
-	pid_t pid;
-	int status;
 	char **args;
+	char command[100];
+	int builtinVerified;
+	int argc = 0;
 
 	args = malloc((MAX_CMD_LEN + 1) * sizeof(char *));
 	if (args == NULL)
@@ -18,34 +19,25 @@ void executioner(char *commandLine)
 		exit(EXIT_FAILURE);
 	}
 
-	args = tokenize(commandLine, args);
-	pid = fork();
-
-	if (pid == -1)
+	args = tokenize(commandLine, args, argc);
+	if (*args[0] != '/')
 	{
-		perror("forking gone wrong: ");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
-	{
-		/*printf("Executing Command: %s\n\n", args[0]);*/
-		/*Start the child process*/
-
-		if (execve(args[0], args, environ) == -1)
-		{
-			perror("shelly bad vibe$ ");
-			printf("errno: %d\n\n", errno);
-			exit(EXIT_FAILURE);
-		}
-		/*printf("Child Process Exected Successfully\n\n");*/
-		exit(EXIT_SUCCESS);
+		strcpy(command, "/bin/");
+		strcat(command, args[0]);
 	}
 	else
 	{
-		/*Parrent Waits*/
-		waitpid(pid, &status, 0);
-		/*printf("Child Processes Exited\n");*/
+		strcpy(command, args[0]);
 	}
+
+	builtinVerified = handlerPicker(command, args, argc);
+	if (builtinVerified == 0)
+	{
+		exit(EXIT_SUCCESS);
+	}
+
+	letsForkIt(command, args);
+
 	free(args);
 }
 
@@ -81,9 +73,10 @@ void beGoneBackSpace(char *c)
  * @commandLine: String to be tokenized.
  * @args: An array to store the tokens
  * Return: A double pointer tothe tokens
+ *@argCount: Is incremented.
  */
 
-char **tokenize(char *commandLine, char **args)
+char **tokenize(char *commandLine, char **args, int argCount)
 {
 	char *token;
 	int i = 0;
@@ -94,6 +87,7 @@ char **tokenize(char *commandLine, char **args)
 	{
 		args[i++] = token;
 		token = strtok(NULL, " ");
+		argCount++;
 	}
 	args[i] = NULL;
 
@@ -119,3 +113,47 @@ void sanitize(char *str, char unwantedChar)
 	}
 }
 
+/**
+ * letsForkIt - creates a child process.
+ * @command: the command to be executed.
+ * @par: list of command line parameters
+ */
+
+void letsForkIt(char *command, char **par)
+{
+	pid_t pid;
+	int status;
+
+
+	if (command == NULL)
+	{
+		fprintf(stderr, "Error: Command is NULL\n");
+		exit(EXIT_FAILURE);
+	}
+
+	pid = fork();
+
+	if (pid == -1)
+	{
+		perror("forking gone wrong\n");
+		exit(FORK_FAILURE);
+	}
+	else if (pid == 0)
+	{
+		/*Start execution*/
+		if (execve(command, par, environ) == -1)
+		{
+			perror("shelly got bad vibes$ ");
+			fprintf(stderr, "errno: %d\n", errno);
+			exit(EXEC_FAILURE);
+		}
+		/*printf("Child Process Execution success\n");*/
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		/*Parrent Waits For Child Process*/
+		waitpid(pid, &status, 0);
+		/*printf("Child Process Exited\n");*/
+	}
+}
