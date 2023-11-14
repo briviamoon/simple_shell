@@ -26,18 +26,19 @@ int handlerPicker(char *command, char **args, int argc)
 
 	parameterize(param, args);
 
-	for (i = 0; builtIn[i].cmdName != NULL; ++i)
+	for (i = 0; builtIn[i].cmdName != NULL; i++)
 	{
 		/*compare witht the built in commands*/
 		if (strcmp(command, builtIn[i].cmdName) == 0)
 		{
 			/*match found, call handler function*/
-			if (strcmp(command, builtIn[1].cmdName) == 0)
+			if (strcmp(command, "pwd") == 0)
 			{
 				directoryPrint();
 			}
-			if (builtIn[i].handler((void *)param) != 0)
+			if (builtIn[i].handler((void *)param[i]) != 0)
 			{
+				printf("something's of in a built in handler\n");
 				perror("handler function\n");
 			}
 			return (0);
@@ -87,6 +88,7 @@ int stringEcho(void *param)
 	char *str = (char *)param;
 	if (str != NULL)
 	{
+		printf("echoing Haloo...\n\n");
 		sanitize(str, '\"');
 		printf("%s", str);
 	}
