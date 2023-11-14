@@ -10,6 +10,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <ctype.h>
+#define EXEC_FAILURE 777
+#define FORK_FAILURE 555
 #define MAX_CMD_LEN 150
 
 extern char **environ;
