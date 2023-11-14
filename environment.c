@@ -68,7 +68,19 @@ struct EnvNode *temporary;
  * @enVariable: poiner to the environment variable string.
  * Return: returns the value of the environment variable's value.
  */
-char *getEnvironment(char *enVariable)
+struct EnvNode* getEnvironment()
 {
-	return (getenv(enVariable));
+	int i = 0;
+	struct Envnode *EnvList = malloc(sizeof(struct EnvNode));
+	char *variable = NULL;
+	char *value = NULL;
+
+	while (environ[i] != NULL)
+	{
+		variable = strtok(environ[i], "=");
+		value = strtok(NULL, "=");
+		addNode(EnvList, variable, value);
+		i++;
+	}
+	return(EnvList);
 }
