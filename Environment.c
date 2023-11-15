@@ -1,15 +1,20 @@
 #include "shell.h"
 
-/*
- * addNode - Adds a new Node to linked lisk
+/**
+ * addNode - Adds a new Node to linked lisk.
  * @head: pointer to head Node of List.
  * @variable: environment variable to add.
- * @value: env variable value
+ * @value: env variable value.
+ *
+ * Description: Takes a Node as a paramenter and
+ *				A variable and Value, Then creates
+ *				A new Node and returns its pointer.
+ * Return: returns a pointer to a new node.
  */
-
 struct EnvNode *addNode(struct EnvNode *head, char *variable, char *value)
 {
 	struct EnvNode *newNode = (struct EnvNode *)malloc(sizeof(struct EnvNode));
+
 	if (newNode == NULL)
 	{
 		fprintf(stderr, "malloc Addnode fail\n");
@@ -40,8 +45,8 @@ struct EnvNode *addNode(struct EnvNode *head, char *variable, char *value)
 	return (head);
 }
 
-/*
- * findEnvVariable - finds a specific Env variable value
+/**
+ * findEnvVariable - finds a specific Env variable value.
  * @head: pointer to a list Head Node.
  * @variable: pointer to variable.
  * Return: returns a pointer to a specific environment variable's s value.
@@ -63,7 +68,7 @@ char *findEnvVariable(struct EnvNode *head, char *variable)
 
 /**
  * freeTheNodes - frees the nodes in list.
- * @EnvNode head: pointer to node head.
+ * @head: pointer to node head.
  */
 void freeTheNodes(struct EnvNode *head)
 {
@@ -81,7 +86,6 @@ void freeTheNodes(struct EnvNode *head)
 
 /**
  * getEnvironment - gets all the environment variables.
- * @enVariable: poiner to the environment variable string.
  * Return: returns the value of the environment variable's value.
  */
 struct EnvNode *getEnvironment(void)
@@ -104,8 +108,8 @@ struct EnvNode *getEnvironment(void)
 /**
  * printList - prints elements of linked list
  * @head: pointer to head node.
+ * Return: 0 if successfull, -1 if failure.
  */
-
 int printList(struct EnvNode *head)
 {
 	struct EnvNode *current = head;

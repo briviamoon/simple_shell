@@ -7,13 +7,12 @@
  * @argc: number of arguments.
  * Return: 0 if the command is handled, -1 otherwise.
  */
-
 int handlerPicker(char *command, char **args, int argc)
 {
 	int i;
 	char **param = (char **)malloc(sizeof(char *) * (argc + 1));
 
-	struct BuiltInCommand builtIn[] = {
+	BuiltInCommand builtIn[] = {
 		{"cd", directoryChange},
 		{"echo", stringEcho},
 		{"exit", builtin_exit},
@@ -52,7 +51,7 @@ int handlerPicker(char *command, char **args, int argc)
 
 /**
  * directoryChange - executed a cd command.
- * @cmd: poiner to command.
+ * @param: poiner to command.
  * Return:always 0
  */
 int directoryChange(void *param)
@@ -62,9 +61,9 @@ int directoryChange(void *param)
 	if (dir == NULL)
 	{
 		chdir("./");
-		return(0);
+		return (0);
 	}
-	else if(chdir(dir) == -1)
+	else if (chdir(dir) == -1)
 	{
 		printf("%s\n", dir);
 		perror("chdir\n");
@@ -72,6 +71,11 @@ int directoryChange(void *param)
 	return (0);
 }
 
+/**
+ * directoryPrint - prints current working directory.
+ * @param: void unused parameter.
+ * Return: 0 on success, -1 on failure.
+ */
 int directoryPrint(void *param)
 {
 	char buffer[MAX_CMD_LEN];
@@ -97,6 +101,7 @@ int directoryPrint(void *param)
 int stringEcho(void *param)
 {
 	char *str = (char *)param;
+
 	if (str != NULL)
 	{
 		printf("echoing Haloo...\n\n");
