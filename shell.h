@@ -39,7 +39,7 @@ typedef struct BuiltInCommand
 {
 	char *cmdName;
 	int (*handler)(void *param);
-}BuiltInCommand;
+} BuiltInCommand;
 
 /*built in commands functions*/
 int handlerPicker(char *command, char **args, int argc);
