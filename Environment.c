@@ -7,21 +7,37 @@
  * @value: env variable value
  */
 
-
-void addNode(struct EnvNode **head, char *variable, char *value)
+struct EnvNode *addNode(struct EnvNode *head, char *variable, char *value)
 {
-	struct EnvNode *newNode = malloc(sizeof(struct EnvNode));	
+	struct EnvNode *newNode = (struct EnvNode *)malloc(sizeof(struct EnvNode));
 	if (newNode == NULL)
 	{
-		perror("malloc");
+		fprintf(stderr, "malloc Addnode fail\n");
 		exit(EXIT_FAILURE);
 	}
 
 	newNode->variable = strdup(variable);
 	newNode->value = strdup(value);
-	newNode->Next = *head;
-
-	*head = newNode;
+	newNode->Next = NULL;
+	/*If the list is empty*/
+	if (head == NULL)
+	{
+		/*newNode is assigned to head of the list*/
+		head = newNode;
+	}
+	else
+	{
+		/*temporary node takes place of head*/
+		struct EnvNode *current = head;
+		/*move through list to reach the end*/
+		while (current->Next != NULL)
+		{
+			current = current->Next;
+		}
+		/*at the end of the list, attach new node*/
+		current->Next = newNode;
+	}
+	return (head);
 }
 
 /*
@@ -51,7 +67,7 @@ char *findEnvVariable(struct EnvNode *head, char *variable)
  */
 void freeTheNodes(struct EnvNode *head)
 {
-struct EnvNode *temporary;
+	struct EnvNode *temporary;
 
 	while (head != NULL)
 	{
@@ -68,10 +84,10 @@ struct EnvNode *temporary;
  * @enVariable: poiner to the environment variable string.
  * Return: returns the value of the environment variable's value.
  */
-struct EnvNode* getEnvironment()
+struct EnvNode *getEnvironment(void)
 {
 	int i = 0;
-	struct Envnode *EnvList = malloc(sizeof(struct EnvNode));
+	struct EnvNode *envList = NULL;
 	char *variable = NULL;
 	char *value = NULL;
 
@@ -79,8 +95,29 @@ struct EnvNode* getEnvironment()
 	{
 		variable = strtok(environ[i], "=");
 		value = strtok(NULL, "=");
-		addNode(EnvList, variable, value);
+		envList = addNode(envList, variable, value);
 		i++;
 	}
-	return(EnvList);
+	return (envList);
+}
+
+/**
+ * printList - prints elements of linked list
+ * @head: pointer to head node.
+ */
+
+int printList(struct EnvNode *head)
+{
+	struct EnvNode *current = head;
+
+	if (current != NULL)
+	{
+		while (current != NULL)
+		{
+			printf("%s=%s\n", current->variable, current->value);
+			current = current->Next;
+		}
+		return (0);
+	}
+	return (-1);
 }

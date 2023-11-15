@@ -11,12 +11,13 @@ int main(void)
 	char *commandLine = NULL;
 	size_t commandLen = 0;
 	ssize_t bytesRead;
+	char *shelly = "Shelly Vibe$";
 	/*char *hardTest = "/bin/ls";*/
 
 	while (1)
 	{
 		/*Show Prompt Sign*/
-		printf("shelly Vibe$ ");
+		printf("%s ", shelly);
 
 		/*Get User Input & Deal with EOF*/
 		bytesRead = getline(&commandLine, &commandLen, stdin);
@@ -48,4 +49,3 @@ int main(void)
 	free(commandLine);
 	return (0);
 }
-

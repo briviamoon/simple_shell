@@ -30,13 +30,18 @@ void executioner(char *commandLine)
 		strcpy(command, args[0]);
 	}
 
-	builtinVerified = handlerPicker(command, args, argc);
-	if (builtinVerified == 0)
+	builtinVerified = handlerPicker(args[0], args, argc);
+	if (builtinVerified == -1)
 	{
-		exit(EXIT_SUCCESS);
+		if (access(command, X_OK) == 0)
+		{
+			letsForkIt(command, args);
+		}
+		else
+		{
+			perror("Command does not exist");
+		}
 	}
-
-	letsForkIt(command, args);
 
 	free(args);
 }
@@ -80,6 +85,7 @@ char **tokenize(char *commandLine, char **args, int argCount)
 {
 	char *token;
 	int i = 0;
+	int count = argCount;
 
 	token = strtok(commandLine, " ");
 
@@ -87,8 +93,9 @@ char **tokenize(char *commandLine, char **args, int argCount)
 	{
 		args[i++] = token;
 		token = strtok(NULL, " ");
-		argCount++;
+		count++;
 	}
+	argCount = count;
 	args[i] = NULL;
 
 	return (args);
@@ -123,7 +130,6 @@ void letsForkIt(char *command, char **par)
 {
 	pid_t pid;
 	int status;
-
 
 	if (command == NULL)
 	{
