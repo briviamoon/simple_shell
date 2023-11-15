@@ -39,23 +39,12 @@ int builtin_help(void *param)
  */
 int printEnvironment(void *param)
 {
-	struct EnvNode *envList = getEnvironment();
+	char **env;
 
 	(void)param;
+	for (env = environ; *env != NULL; env++)
+		printf("%s\n", *env);
 
-	if (envList == NULL)
-	{
-		freeTheNodes(envList);
-		return (-1);
-	}
-	else
-	{
-		if (printList(envList) == -1)
-		{
-			perror("print List");
-			return (-1);
-		}
-	}
 	return (0);
 }
 
