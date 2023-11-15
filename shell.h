@@ -27,16 +27,19 @@ void letsForkIt(char *command, char **par);
 void parameterize(char **param, char **args);
 int builtin_help(void *param);
 
-/*
- * BuiltInCommand - Data structure for built in commands.
+/**
+ * struct BuiltInCommand - Data structure for built in commands.
  * @cmdName: name of command.
  * @handler: function to handle the command.
+ *
+ * Description: Structure containing a command signature
+ *				And a Relative Function Call to execute it.
  */
-struct BuiltInCommand
+typedef struct BuiltInCommand
 {
 	char *cmdName;
 	int (*handler)(void *param);
-};
+}BuiltInCommand;
 
 /*built in commands functions*/
 int handlerPicker(char *command, char **args, int argc);
@@ -48,9 +51,14 @@ int printEnvironment(void *param);
 int setEnvironment(void *param);
 
 /**
- * EnvironmentNode - Structure of linked-list of environment vars.
- * @variable: environment variable.
- * @Value: value of the environment variable.
+ * struct EnvNode - Structure of linked-list of environment vars.
+ * @variable: The environment variable.
+ * @value: data of the environment variable.
+ * @Next: poiner to next node in list.
+ *
+ * Description: Structure containing environment data
+ *				A variable name, A value, and a pointer
+ *				To the Next Node in The lnked List
  */
 struct EnvNode
 {

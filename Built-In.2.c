@@ -2,7 +2,7 @@
 
 /**
  * builtin_exit - Handle the builtin 'exit' command.
- * @commands: An array of commands and arguments.
+ * @param: An array of commands and arguments.
  * Return: 1 to indicate that the shell should exit.
  */
 int builtin_exit(void *param)
@@ -16,7 +16,8 @@ int builtin_exit(void *param)
 }
 
 /**
- * builtin_help - Display information about built-in commands
+ * builtin_help - Display information about built-in commands.
+ * @param: void unused variable.
  * Return: Always returns 1.
  */
 int builtin_help(void *param)
@@ -33,7 +34,7 @@ int builtin_help(void *param)
 
 /**
  * printEnvironment - prints a systems environment.
- * @param; void casted parameter to a relative command.
+ * @param: void casted parameter to a relative command.
  * Return: -1 if fail, 0 if success.
  */
 int printEnvironment(void *param)
@@ -58,6 +59,14 @@ int printEnvironment(void *param)
 	return (0);
 }
 
+/**
+ * setEnvironment - sets an environment variable.
+ * @param: casted as void but accepts any type.
+ * Return: 0 if successfull, -1 if success.
+ *
+ * Description: takes in a string in the form
+ *				VARIABLE  VALUE.
+ */
 int setEnvironment(void *param)
 {
 	char **Newenviron = (char **)param;
@@ -77,7 +86,7 @@ int setEnvironment(void *param)
 }
 
 /**
- * convertEnvListToArray - Converts the linked list of environment variables to an array.
+ * ConvertEnvListToArray - Converts the linked list of env var to arr.
  * @envList: Pointer to the head node of the linked list.
  * Return: Array of strings representing environment variables.
  */
