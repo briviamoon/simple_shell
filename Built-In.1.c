@@ -13,7 +13,6 @@ int handlerPicker(char *command, char **args)
 
 	BuiltInCommand builtIn[] = {
 		{"cd", my_cd},
-		{"echo", stringEcho},
 		{"exit", builtin_exit},
 		{"help", builtin_help},
 		{"pwd", directoryPrint},
@@ -87,27 +86,6 @@ int directoryPrint(void **param)
 		perror("getcwd");
 		return (-1);
 	}
-	return (0);
-}
-
-/**
- * stringEcho - prints echo argument to stdout.
- * @param: string to print.
- * Return: always 0.
- */
-int stringEcho(void **param)
-{
-	char **str = (char **)param;
-	int i = 0;
-
-	printf("echoing ...\n\n");
-	while (str[i] != NULL)
-	{
-		sanitize(str[i], '\"');
-		printf("%s ", str[i]);
-		i++;
-	}
-	putchar('\n');
 	return (0);
 }
 

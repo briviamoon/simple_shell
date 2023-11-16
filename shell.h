@@ -52,7 +52,6 @@ typedef struct BuiltInCommand
 int handlerPicker(char *command, char **args);
 int directoryChange(void **param);
 int directoryPrint(void **param);
-int stringEcho(void **param);
 int builtin_exit(void **param);
 int printEnvironment(void **param);
 int setEnvironment(void **param);
