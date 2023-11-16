@@ -20,7 +20,7 @@ int main(void)
 		printf("%s ", shelly);
 
 		/*Get User Input & Deal with EOF*/
-		bytesRead = getline(&commandLine, &commandLen, stdin);
+		bytesRead = my_getline(&commandLine, &commandLen, stdin);
 		if (bytesRead != -1)
 		{
 			/*rm New Line char*/

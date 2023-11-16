@@ -24,8 +24,15 @@ void beGoneBackSpace(char *c);
 char **tokenize(char *commandLine, char **args, int argCount);
 void sanitize(char *str, char unwantedChar);
 void letsForkIt(char *command, char **par);
-void parameterize(char **param, char **args);
-int builtin_help(void *param);
+char **parameterize(char **args);
+int builtin_help(void **param);
+size_t my_getline(char **line, size_t *len, FILE *stream);
+char *my_strtok(char *str, char delim);
+int addNewEnviron(char **parameters);
+int ifEnvironExist(char **parameters);
+int previousDir(char *dir);
+int homeDir(char *dir);
+int dirUpdate(void);
 
 /**
  * struct BuiltInCommand - Data structure for built in commands.
@@ -38,17 +45,19 @@ int builtin_help(void *param);
 typedef struct BuiltInCommand
 {
 	char *cmdName;
-	int (*handler)(void *param);
+	int (*handler)(void **param);
 } BuiltInCommand;
 
 /*built in commands functions*/
-int handlerPicker(char *command, char **args, int argc);
-int directoryChange(void *param);
-int directoryPrint(void *param);
-int stringEcho(void *param);
-int builtin_exit(void *param);
-int printEnvironment(void *param);
-int setEnvironment(void *param);
+int handlerPicker(char *command, char **args);
+int directoryChange(void **param);
+int directoryPrint(void **param);
+int stringEcho(void **param);
+int builtin_exit(void **param);
+int printEnvironment(void **param);
+int setEnvironment(void **param);
+int my_setenv(void **param);
+int my_cd(void **param);
 
 /**
  * struct EnvNode - Structure of linked-list of environment vars.

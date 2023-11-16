@@ -30,7 +30,7 @@ void executioner(char *commandLine)
 		strcpy(command, args[0]);
 	}
 
-	builtinVerified = handlerPicker(args[0], args, argc);
+	builtinVerified = handlerPicker(args[0], args);
 	if (builtinVerified == -1)
 	{
 		if (access(command, X_OK) == 0)
@@ -87,12 +87,12 @@ char **tokenize(char *commandLine, char **args, int argCount)
 	int i = 0;
 	int count = argCount;
 
-	token = strtok(commandLine, " ");
+	token = my_strtok(commandLine, ' ');
 
 	while (token != NULL && i < MAX_CMD_LEN)
 	{
 		args[i++] = token;
-		token = strtok(NULL, " ");
+		token = my_strtok(NULL, ' ');
 		count++;
 	}
 	argCount = count;

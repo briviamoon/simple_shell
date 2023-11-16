@@ -5,14 +5,19 @@
  * @param: An array of commands and arguments.
  * Return: 1 to indicate that the shell should exit.
  */
-int builtin_exit(void *param)
+int builtin_exit(void **param)
 {
-	int *status = (int *)param;
+	int state;
+	char **status = (char **)param;
 
-	if (status == NULL)
+	if (status[0] == NULL)
 		exit(0);
 	else
-		exit(status[0]);
+	{
+		state = atoi(status[0]);
+		exit(state);
+	}
+	return (0);
 }
 
 /**
@@ -20,7 +25,7 @@ int builtin_exit(void *param)
  * @param: void unused variable.
  * Return: Always returns 1.
  */
-int builtin_help(void *param)
+int builtin_help(void **param)
 {
 	(void)param;
 
@@ -28,6 +33,7 @@ int builtin_help(void *param)
 	printf("1. exit - Terminate the shell.\n");
 	printf("2. cd <directory> - Change the current directory.\n");
 	printf("3. help - Display this help information.\n");
+	printf("4. setenv - set an environment variable\n");
 
 	return (1);
 }
@@ -37,7 +43,7 @@ int builtin_help(void *param)
  * @param: void casted parameter to a relative command.
  * Return: -1 if fail, 0 if success.
  */
-int printEnvironment(void *param)
+int printEnvironment(void **param)
 {
 	char **env;
 
@@ -56,7 +62,7 @@ int printEnvironment(void *param)
  * Description: takes in a string in the form
  *				VARIABLE  VALUE.
  */
-int setEnvironment(void *param)
+int setEnvironment(void **param)
 {
 	char **Newenviron = (char **)param;
 	char *variable = NULL;
