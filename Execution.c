@@ -39,7 +39,7 @@ void executioner(char *commandLine)
 		}
 		else
 		{
-			perror("Command does not exist");
+			perror("shelly got bad Vibes$ ");
 		}
 	}
 
@@ -133,7 +133,7 @@ void letsForkIt(char *command, char **par)
 
 	if (command == NULL)
 	{
-		fprintf(stderr, "Error: Command is NULL\n");
+		perror("Command NULL");
 		exit(EXIT_FAILURE);
 	}
 
@@ -150,11 +150,9 @@ void letsForkIt(char *command, char **par)
 		if (execve(command, par, environ) == -1)
 		{
 			perror("shelly got bad vibes$ ");
-			fprintf(stderr, "errno: %d\n", errno);
 			exit(EXEC_FAILURE);
 		}
 		/*printf("Child Process Execution success\n");*/
-		exit(EXIT_SUCCESS);
 	}
 	else
 	{
