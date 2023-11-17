@@ -26,7 +26,7 @@ void executioner(char *commandLine)
 		{
 			if (findCommandInPath(args[0], command))
 			{
-					letsForkIt(command, args);
+				letsForkIt(command, args);
 			}
 			else
 			{

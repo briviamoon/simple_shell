@@ -2,7 +2,7 @@
 
 /**
  * findCommandInPath - search for a command in the PATH
- * @Command: command to search for.
+ * @command: command to search for.
  * @result: buffer to store full path of command if found.
  * Return: true if fount, false otherwise.
  */
