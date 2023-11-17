@@ -35,7 +35,7 @@ int handlerPicker(char *command, char **args)
 			/*match found, call handler function*/
 			if (builtIn[i].handler((void **)param) != 0)
 			{
-				fprintf(stderr, "something's of in a built in handler\n");
+				fprintf(stderr, "Error Executing: %s\n", command);
 				return (-1);
 			}
 			return (0);

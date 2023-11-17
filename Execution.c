@@ -14,7 +14,7 @@ void executioner(char *commandLine)
 	args = malloc((MAX_CMD_LEN + 1) * sizeof(char *));
 	if (args == NULL)
 	{
-		perror("MAlloc args Fail: ");
+		perror("malloc in executioner");
 		exit(EXIT_FAILURE);
 	}
 
@@ -125,7 +125,7 @@ void letsForkIt(char *command, char **par)
 		/*Start execution*/
 		if (execve(command, par, environ) == -1)
 		{
-			perror("shelly got bad vibes$ ");
+			fprintf(stderr, "Command not found: %s\n", command);
 			exit(EXEC_FAILURE);
 		}
 		/*printf("Child Process Execution success\n");*/

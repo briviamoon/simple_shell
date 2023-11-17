@@ -1,4 +1,5 @@
-#include "shell.h"
+#include "../shell.h"
+#include "Nodes.h"
 
 /**
  * addNode - Adds a new Node to linked lisk.
