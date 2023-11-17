@@ -9,7 +9,6 @@ void executioner(char *commandLine)
 {
 	char **args;
 	char command[100];
-	int builtinVerified;
 	int argc = 0;
 
 	args = malloc((MAX_CMD_LEN + 1) * sizeof(char *));
@@ -22,55 +21,32 @@ void executioner(char *commandLine)
 	args = tokenize(commandLine, args, argc);
 	if (*args[0] != '/')
 	{
-		strcpy(command, "/bin/");
-		strcat(command, args[0]);
+		/*if PATH not absolute, search inPATH*/
+		if (handlerPicker(args[0], args) != 0)
+		{
+			if (findCommandInPath(args[0], command))
+			{
+					letsForkIt(command, args);
+			}
+			else
+			{
+				fprintf(stderr, "Command not found: %s\n", args[0]);
+			}
+		}
 	}
 	else
 	{
-		strcpy(command, args[0]);
-	}
-
-	builtinVerified = handlerPicker(args[0], args);
-	if (builtinVerified == -1)
-	{
-		if (access(command, X_OK) == 0)
+		if (access(args[0], X_OK) == 0)
 		{
-			letsForkIt(command, args);
+			letsForkIt(args[0], args);
 		}
 		else
 		{
-			perror("shelly got bad Vibes$ ");
+			fprintf(stderr, "Command not found: %s\n", args[0]);
 		}
 	}
 
 	free(args);
-}
-
-/**
- * beGoneBackSpace - Removes backspace symbols
- * @c: poiner to command line
- */
-
-void beGoneBackSpace(char *c)
-{
-	size_t len = strlen(c);
-	size_t i, j;
-
-	for (i = 0; i < len; i++)
-	{
-		if (c[i] == '\b')
-		{
-			if (i > 0)
-			{
-				for (j = i - 1; j < len; j++)
-				{
-					c[j] = c[j + 1];
-				}
-				--i;
-				--len;
-			}
-		}
-	}
 }
 
 /**

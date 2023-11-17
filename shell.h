@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <ctype.h>
+#include <stdbool.h>
 #define EXEC_FAILURE 777
 #define FORK_FAILURE 555
 #define MAX_CMD_LEN 1024
@@ -20,7 +21,6 @@
 
 extern char **environ;
 void executioner(char *commandLine);
-void beGoneBackSpace(char *c);
 char **tokenize(char *commandLine, char **args, int argCount);
 void sanitize(char *str, char unwantedChar);
 void letsForkIt(char *command, char **par);
@@ -33,6 +33,7 @@ int ifEnvironExist(char **parameters);
 int previousDir(char *dir);
 int homeDir(char *dir);
 int dirUpdate(void);
+bool findCommandInPath(char *command, char *result);
 
 /**
  * struct BuiltInCommand - Data structure for built in commands.
