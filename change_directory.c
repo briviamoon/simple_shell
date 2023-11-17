@@ -12,8 +12,10 @@ int my_cd(void **param)
 
 	if (parameter == NULL || parameter[0] == NULL)
 	{
-		perror("Usage: cd <valid - directoy>");
-		return (-1);
+		if (chdir(getenv("HOME")) != 0)
+			return (-1);
+		else
+			return (0);
 	}
 	dir = parameter[0];
 
@@ -23,7 +25,7 @@ int my_cd(void **param)
 		{
 			if (chdir(dir) != 0)
 			{
-				perror("my_cd");
+				perror("cd");
 				return (-1);
 			}
 		}
